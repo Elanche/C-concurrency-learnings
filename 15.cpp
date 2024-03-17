@@ -13,7 +13,7 @@ void myAccumulate(ipIterator start, ipIterator end, T& result){
 }
 
 template<typename ipIterator, typename T>
-T parallel_accumulate(ipIterator start, ipIterator end, T initVal){
+T parallel_accumulate(ipIterator start, ipIterator end, T& initVal){
     int total_size=distance(start, end);
     
     int threads_based_on_elements=total_size/(int)BLOCK_SIZE;
@@ -44,9 +44,10 @@ T parallel_accumulate(ipIterator start, ipIterator end, T initVal){
     }*/
     for_each(threads.begin(), threads.end(), mem_fn(&thread::join));
     T sum=initVal;
-    for(int i=0;i<=num_of_threads;i++){
+    /*for(int i=0;i<=num_of_threads;i++){
         sum+=results[i];
-    }
+    }*/
+    sum=accumulate(results.begin(), results.end(), sum);
     return sum;
 }
 
@@ -55,7 +56,8 @@ int main(){
     for(auto &i:v){
         i=1;
     }
-    int sum=parallel_accumulate(v.begin(), v.end(), 0);
+    int init_val=0;
+    int sum=parallel_accumulate(v.begin(), v.end(), init_val);
     cout<<sum<<endl;
     return 0;
 }
