@@ -1,0 +1,4 @@
+1. avoid deadlock
+2. avoid race condition happening inherited from interface
+3. handle all exception scenarios.
+4. should not see invarient data at any point of time(if 2 threads are accessing the data structure, at any point, any thread should not access broken data structure)
