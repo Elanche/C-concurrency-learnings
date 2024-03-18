@@ -1,0 +1,54 @@
+1. when using mutex, 
+    mutex m1, m2
+    fun1(){
+      m1.lock;
+      sleep(10)
+      m2.lock;
+      m2.unlock;
+      m1.unlock;
+    }
+    fun2(){
+      m2.lock;
+      sleep(10);
+      m1.lock();
+      m2.unlock;
+      m1.unlock;
+    }
+
+main(){
+  thread t1(fun1);
+  thread t2(fun2);
+}
+
+here deadlock happens
+
+2. when joining threads in different threads like
+  thread t1, t2;
+  fun1(){
+    sleep(10);
+    t2.join();
+  }
+
+  fun2(){
+    sleep(10);
+    t1.join();
+  }
+  main(){
+    thread t1(fun1);
+    thread t2(fun2);
+  }
+here deadlock happens 
+
+3. when using promise-future, 
+
+fun(future f){
+  f.get();
+}
+main(){
+  declare prmoise, future
+    thread t(fun, future);
+    t.join();
+    promise.set_value();
+}
+
+here im creating a thread and inisde it, im calling get function for future, and im joining the main thread before setting it, so here deadlock happens
